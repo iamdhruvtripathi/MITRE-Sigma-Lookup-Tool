@@ -1,130 +1,187 @@
-#  MITRE-Sigma Lookup Tool
+<div align="center">
 
-CLI tool that maps MITRE ATT&CK techniques to associated mitigations, Sigma detection rules, and Atomic Red Team tests, allowing analysts to explore defensive controls, detection content, and attack emulation resources from a single interface
-## Project Background
+# 🎯 MITRE-Sigma Lookup Tool
 
-**MITRE ATT&CK** is a globally accessible knowledge base of adversary tactics and techniques. Security teams use it to understand attacker behaviors, plan defenses, and map observed activity in their networks.
+**One CLI to map MITRE ATT&CK techniques to mitigations, Sigma detection rules and Atomic Red Team tests**
 
-**Sigma** is a generic and open signature format for SIEM (Security Information and Event Management) systems. It allows security teams to define detection rules once and convert them to different SIEM formats. By linking ATT&CK techniques to Sigma rules, analysts can quickly translate threat intelligence into actionable detection logic.
+<img src="https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.9+"/>
+<img src="https://img.shields.io/badge/MITRE_ATT%26CK-C8102E?style=for-the-badge&logo=databricks&logoColor=white" alt="MITRE ATT&CK"/>
+<img src="https://img.shields.io/badge/Sigma-1F6FEB?style=for-the-badge&logo=sigma&logoColor=white" alt="Sigma"/>
+<img src="https://img.shields.io/badge/Atomic_Red_Team-D7263D?style=for-the-badge&logo=redhat&logoColor=white" alt="Atomic Red Team"/>
+<img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" alt="Django"/>
+<img src="https://img.shields.io/badge/Splunk-000000?style=for-the-badge&logo=splunk&logoColor=white" alt="Splunk"/>
 
-**Atomic Red Team** is an open-source library of ATT&CK-mapped tests that safely emulate adversary behaviors in real environments. Security teams use these tests to validate detections, assess defensive controls, and practice threat hunting against realistic attack techniques. By incorporating Atomic Red Team data alongside ATT&CK techniques, mitigations, and Sigma rules, analysts can better understand how an attack is performed, detected, and defended against.
+</div>
 
-## Project Specifications
+---
 
-**Input:**
+## 📖 Overview
 
-- ATT&CK Technique ID (e.g., T1566)
-- ATT&CK Technique Name (e.g., Phishing)
-- ATT&CK Technique Description (e.g., Adversaries may send victims emails containing malicious)
+The MITRE-Sigma Lookup Tool lets analysts explore **defensive controls**, **detection content** and **attack emulation** for any ATT&CK technique from a single interface, in the terminal or the browser.
 
-**Output:**
-- Technique name
-- Technique description
-- ATT&CK mitigations associated with the technique
-- Sigma detection rules that reference the technique
-- Atomic Red Team tests associated with the technique
+```text
+  T1566  ──►  📝 Technique  ──►  🛡️ Mitigations  ──►  🔍 Sigma Rules  ──►  🧪 Atomic Tests
+```
 
-## Features
-- Execute the MITRE-Sigma Lookup Tool from anywhere in the terminal using a custom alias
-- Export console output to files using Rich Console recording with optional `-o/--output` support
-- Support bulk processing of ATT&CK techniques via comma-separated input or text file ingestion with per-technique report generation and structured output directories
-- Integrated Atomic Red Team to display ATT&CK-mapped adversary emulation tests in a formatted table
-- Built a Django web interface with search dashboard, backend integration, routing, and HTML templates for browser-based lookups
-- Improved Sigma search performance using an inverted index and in-memory caching for fast `O(1)` technique lookups
-- Added automatic updates for MITRE ATT&CK and Sigma data using GitPython with a single `--update` flag
-- Enhanced search with partial matching on technique names and descriptions, including paginated results for large outputs
-- Integrated Splunk SIEM using PySigma and Splunk SDK to convert Sigma rules into Splunk queries and deploy them as active alerts
+---
 
-### Dependencies
-Python 3.9+
+## 🧭 Table of Contents
 
-A Linux environment with Internet access
+- [🎯 Project Background](#-project-background)
+- [⚙️ Specifications](#️-specifications)
+- [✨ Features](#-features)
+- [🚀 Setup](#-setup)
+- [💡 Example Usage](#-example-usage)
+- [🧩 Features Implemented](#-features-implemented)
+- [🔮 Future Features](#-future-features)
 
-*Note this project can be done in other systems, however all instructions are intended for Linux and may need to be modified for other environments.*
-	
-## Setup Environment
+---
 
-### 1. Navigate to your folder where your scripts are located
+## 🎯 Project Background
+
+| | Framework | Why it matters |
+|:---:|---|---|
+| 🗺️ | **MITRE ATT&CK** | A globally accessible knowledge base of adversary tactics and techniques, used to understand attacker behavior, plan defenses and map observed activity |
+| 🔍 | **Sigma** | An open, generic signature format for SIEMs. Rules are written once and converted to any SIEM, so linking them to ATT&CK turns threat intel into detection logic fast |
+| 🧪 | **Atomic Red Team** | An open-source library of ATT&CK-mapped tests that safely emulate adversary behavior to validate detections, assess controls and practice threat hunting |
+
+Together, they show how an attack is **performed, detected and defended against**.
+
+---
+
+## ⚙️ Specifications
+
+<table>
+<tr>
+<th>📥 Input</th>
+<th>📤 Output</th>
+</tr>
+<tr valign="top">
+<td>
+
+- Technique **ID**, e.g. `T1566`
+- Technique **name**, e.g. `Phishing`
+- Technique **description**, e.g. *"Adversaries may send victims emails containing malicious…"*
+
+</td>
+<td>
+
+- Technique name and description
+- Associated ATT&CK **mitigations**
+- **Sigma rules** referencing the technique
+- **Atomic Red Team** tests for the technique
+
+</td>
+</tr>
+</table>
+
+---
+
+## ✨ Features
+
+| | Feature |
+|:---:|---|
+| ⌨️ | Run the tool from anywhere in the terminal with a custom alias |
+| 💾 | Export console output to files via Rich Console recording (`-o` / `--output`) |
+| 📦 | Bulk-process techniques from comma-separated input or a text file, with per-technique reports and structured output folders |
+| 🧪 | Atomic Red Team tests displayed in a formatted table |
+| 🌐 | Django web interface with a search dashboard, routing and HTML templates |
+| ⚡ | Inverted index + in-memory caching for fast `O(1)` Sigma lookups |
+| 🔄 | One-flag `--update` refresh of ATT&CK and Sigma data using GitPython |
+| 🔎 | Partial matching on technique names and descriptions, with paginated results |
+| 📊 | Splunk integration: converts Sigma rules to SPL with PySigma and deploys them as active alerts via the Splunk SDK |
+
+---
+
+## 🚀 Setup
+
+> [!NOTE]
+> **Requirements:** Python 3.9+ and a Linux environment with internet access. Other systems work too, but these instructions are written for Linux.
+
+**1. Go to the folder containing `mitre-attack-sigma.py`**
+
 ```bash
 cd folder
 ```
-- Note: Navigate into the same folder where `mitre-attack-sigma.py` is located
 
-### 2. Create a virtual environment and activate it
+**2. Create and activate a virtual environment**
+
 ```bash
 python -m venv venv
 source venv/bin/activate
 ```
-### 3. Install libraries
+
+**3. Install the libraries**
+
 ```bash
 pip install mitreattack-python pyyaml rich python-dotenv pysigma GitPython pysigma-backend-splunk splunk-sdk
 ```
 
-<!--https://mitreattack-python.readthedocs.io/en/latest/
-### 3. Download an ATT&CK STIX bundle file (enterprise)
-```bash
-curl https://raw.githubusercontent.com/mitre-attack/attack-stix-data/refs/heads/master/enterprise-attack/enterprise-attack.json -o enterprise-attack.json
-```
-### 4. Clone SigmaHQ/sigma locally
-```bash
-git clone https://github.com/SigmaHQ/sigma.git
-```
-### 5. Create a hello world program in `lookup.py`
-```bash
-echo -e '#!/usr/bin/env python3\nprint("hello world")' > lookup.py
-``` -->
+---
 
-## Example Usage
-### Searching by Technique ID
+## 💡 Example Usage
+
+### 🔢 Search by Technique ID
 
 ```bash
 python mitre-sigma-lookup-tool T1566
 ```
 
-Below we can see the successful run for Technique ID `T1566`. This printed out a comprehensive description of what phishing is (adversaries sending malicious messages to gain access to victim systems, utilizing social engineering, spearphishing, malicious attachments, or links). It also displayed a mitigation table of how to defend against phising such as `Audit (M1047)`, `Network Intrusion Prevention (M1031)`, `Software Configuration (M1054)`, `Restrict Web-Based Content (M1021)`, `Antivirus/Antimalware (M1049)`, and `User Training (M1017)`. 
+The run for **`T1566` (Phishing)** prints a full description of the technique: adversaries sending malicious messages through social engineering, spearphishing, malicious attachments or links.
 
-The Sigma rules tables describes the attempt to find code that can detect phishing attempts. For example, the script found files in the local folders, `proc_creation_win_office_outlook_execution_from_temp.yml and iso_phishing.yml` that contain the text `T1566`. We see one rule parsed named `Search-ms and WebDAV Suspicious Indicators in URL`
+- **🛡️ Mitigations:** `Audit (M1047)`, `Network Intrusion Prevention (M1031)`, `Software Configuration (M1054)`, `Restrict Web-Based Content (M1021)`, `Antivirus/Antimalware (M1049)` and `User Training (M1017)`
+- **🔍 Sigma rules:** local rule files referencing `T1566`, such as `proc_creation_win_office_outlook_execution_from_temp.yml` and `iso_phishing.yml`, including the parsed rule *Search-ms and WebDAV Suspicious Indicators in URL*
 
-<img width="6412" height="10076" alt="mitre_ID" src="https://github.com/user-attachments/assets/e95e816f-8da4-4d50-b89d-1f8c3edd9075" />
+<details>
+<summary><b>📸 View full output for T1566</b></summary>
+<br/>
+<img width="100%" alt="Lookup output for T1566" src="https://github.com/user-attachments/assets/e95e816f-8da4-4d50-b89d-1f8c3edd9075" />
+</details>
 
-### Searching by Technique name
+### 🔤 Search by Technique Name
 
 ```bash
 python mitre-sigma-lookup-tool Masquerading
 ```
 
-Instead of searching by Technique ID, we can also search by technique name. I chose `Masquerading (T1036)` where hackers disguise malicious files or activity as something completely harmless (like renaming a piece of malware to svchost.exe so it looks like a built-in Windows service). The mitigations and sigma rules are outputted as well and describe the ways to defend and detect these attacks
+Searching **Masquerading (`T1036`)** covers attackers disguising malicious files or activity as something harmless, like renaming malware to `svchost.exe` so it passes as a built-in Windows service.
 
-For example, we can see that one mitigation technique is `Code Signing (M1045)` where we ensure files have a valid digital signature so hackers can't easily fake standard system utilities
+- **🛡️ Mitigation example:** `Code Signing (M1045)` ensures files carry a valid digital signature, so standard system utilities can't easily be faked
+- **🔍 Detection example:** `proc_creation_win_renamed_powershell.yml` and `proc_creation_win_renamed_psexec.yml` watch Windows event logs for processes renamed to hide their identity
 
-The sigma output shows us ways to detect this attack. In these rules `proc_creation_win_renamed_powershell.yml` and `proc_creation_win_renamed_psexec.yml` monitor Windows event logs to see if a process has been renamed to hide its identity
+<details>
+<summary><b>📸 View full output for Masquerading</b></summary>
+<br/>
+<img width="100%" alt="Lookup output for Masquerading" src="https://github.com/user-attachments/assets/e3ebc8cc-aefc-4253-b852-c2c4aa461d4d" />
+</details>
 
-<p align="center">
-  <img width="5367" height="16384" alt="mitre_name" src="https://github.com/user-attachments/assets/e3ebc8cc-aefc-4253-b852-c2c4aa461d4d" />
-</p>
+---
 
-## Features Implemented
+## 🧩 Features Implemented
 
-- Alias the program to create a custom command that is accessible anywhere
-	- [Feature #1](mitre-sigma-lookup-tool/post-project-implementation-01-alias)	 
-- Handle outputting to files
-	- [Feature #2](mitre-sigma-lookup-tool/post-project-implementation-02-handle-file-output) 
-- Handle bulk searches and outputs
-	- [Feature #3](mitre-sigma-lookup-tool/post-project-implementation-03-bulk-search-output) 
-- Integrate another open-source library mapped to MITRE ATT&CK
-	- [Feature #4](mitre-sigma-lookup-tool/post-project-implementation-04-atomic-attack-lib) 
-- Use Django to create a web interface (search bar & hosting the site)
-	- [Feature #5](mitre-sigma-lookup-tool/post-project-implementation-05-django-web-interface)
-- Improve the speed of Sigma searches 
-	- [Feature #6](mitre-sigma-lookup-tool/post-project-implementation-06-sigma-speed-searches)
-- Automatically update MITRE and Sigma (which are only accessed locally)
-	- [Feature #7](mitre-sigma-lookup-tool/post-project-implementation-07-auto-mitre-sigma-updates)
-- Make searching by name or description “smarter” 
-	- [Feature #8](mitre-sigma-lookup-tool/post-project-implementation-08-smarter-search)
-- Interface directly with other professional cybersecurity tools
-	- Splunk - Open-source SIEM (could implement Sigma rules directly)
- 		- [Feature #9](mitre-sigma-lookup-tool/post-project-implementation-09-splunk-integration)
+| # | Feature | Writeup |
+|:---:|---|:---:|
+| 01 | ⌨️ Alias the program into a custom command available anywhere | [View](mitre-sigma-lookup-tool/post-project-implementation-01-alias) |
+| 02 | 💾 Handle outputting to files | [View](mitre-sigma-lookup-tool/post-project-implementation-02-handle-file-output) |
+| 03 | 📦 Handle bulk searches and outputs | [View](mitre-sigma-lookup-tool/post-project-implementation-03-bulk-search-output) |
+| 04 | 🧪 Integrate Atomic Red Team, another ATT&CK-mapped library | [View](mitre-sigma-lookup-tool/post-project-implementation-04-atomic-attack-lib) |
+| 05 | 🌐 Django web interface with search bar and hosting | [View](mitre-sigma-lookup-tool/post-project-implementation-05-django-web-interface) |
+| 06 | ⚡ Faster Sigma searches | [View](mitre-sigma-lookup-tool/post-project-implementation-06-sigma-speed-searches) |
+| 07 | 🔄 Auto-update local MITRE and Sigma data | [View](mitre-sigma-lookup-tool/post-project-implementation-07-auto-mitre-sigma-updates) |
+| 08 | 🔎 Smarter search by name or description | [View](mitre-sigma-lookup-tool/post-project-implementation-08-smarter-search) |
+| 09 | 📊 Splunk SIEM integration to deploy Sigma rules directly | [View](mitre-sigma-lookup-tool/post-project-implementation-09-splunk-integration) |
 
-## Future Features
-- MITRE Caldera - Attack platform for launching TTPs in MITRE ATT&CK
-- Metasploit - Tool for emulating attacker’s TTPs
+---
+
+## 🔮 Future Features
+
+- [ ] 🔥 **MITRE Caldera** integration, an attack platform for launching ATT&CK TTPs
+- [ ] 💥 **Metasploit** integration, for emulating attacker TTPs
+
+---
+
+<div align="center">
+
+⭐ **If this tool helped you, consider starring the repo!** ⭐
+
+</div>
