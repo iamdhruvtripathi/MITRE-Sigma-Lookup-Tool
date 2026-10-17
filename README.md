@@ -173,13 +173,6 @@ Searching **Masquerading (`T1036`)** covers attackers disguising malicious files
 
 ---
 
-## 🔮 Future Features
-
-- [ ] 🔥 **MITRE Caldera** integration, an attack platform for launching ATT&CK TTPs
-- [ ] 💥 **Metasploit** integration, for emulating attacker TTPs
-
----
-
 <div align="center">
 
 ⭐ **If this tool helped you, consider starring the repo!** ⭐
